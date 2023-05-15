@@ -4,7 +4,7 @@ import random
 from datetime import datetime
 from time import strftime
 
-class Creer():
+class CreerCylindres():
     def __init__(self, nbCylindre):
         self.alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
         self.nomFichier = "cylindre_" + datetime.now().strftime("%d_%m_%Y__%H_%M_%S") + ".txt"
@@ -38,6 +38,20 @@ class Creer():
             fichier.write("\n")
         fichier.close()
 
-Creer(5)
+CreerCylindres(5)
 
 
+def FichierTexteEnDictionnaire(nomFichier):
+    # Lecture du fichier texte et création d'un dictionnaire {ligne: [cylindre]}
+    fichier = open(nomFichier, "r")
+    dictionnaire = {}
+    nbLigne = 0
+    for ligne in fichier:
+        nbLigne += 1
+        dictionnaire[nbLigne] = []
+        for lettre in ligne:
+            dictionnaire[nbLigne].append(lettre)
+    fichier.close()
+    return dictionnaire
+
+print(FichierTexteEnDictionnaire("test.txt"))
