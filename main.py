@@ -19,7 +19,7 @@ class CreerCylindres():
     def creerCylindre(self):
         # Création d'un cylindre avec les lettres de l'alphabet dans un ordre aléatoire
         cylindre = []
-        for i in range(0, 26):
+        for i in range(26):
             cylindre.append(self.alphabet[i])
         random.shuffle(cylindre)
         return cylindre
@@ -50,8 +50,49 @@ def FichierTexteEnDictionnaire(nomFichier):
         nbLigne += 1
         dictionnaire[nbLigne] = []
         for lettre in ligne:
-            dictionnaire[nbLigne].append(lettre)
+            if lettre != "\n":
+                dictionnaire[nbLigne].append(lettre)
     fichier.close()
     return dictionnaire
 
-print(FichierTexteEnDictionnaire("test.txt"))
+nomFichier = "test.txt"
+#print(FichierTexteEnDictionnaire(nomFichier))
+cylindres = FichierTexteEnDictionnaire(nomFichier)
+
+class cryptageManuel():
+    def __init__(self):
+        #self.cylindres = FichierTexteEnDictionnaire(nomFichier)
+        self.cylindres = cylindres
+        self.ordreCylindres = self.choisirOrdreCylindres()
+        # for ligne in self.cylindres:
+        #     self.ordreCylindres.append(ligne)
+        
+    def afficherCylindres(self):
+        textOrdreCylindres = ""
+        nbCylindres = len(self.cylindres)
+        for i in self.cylindres:
+            textOrdreCylindres += str(self.ordreCylindres[i-1]) + " "
+        print(textOrdreCylindres)
+        for i in range(26):
+            for j in range(nbCylindres):
+                print(self.cylindres[self.ordreCylindres[j]][i], end=" ")
+            print("")
+
+    def tournerCylindre(self, numCylindre, sens):
+        if sens == 1:
+            self.cylindres[numCylindre].insert(0, self.cylindres[numCylindre].pop())
+        elif sens == 0:
+            self.cylindres[numCylindre].append(self.cylindres[numCylindre].pop(0))
+    
+    def choisirOrdreCylindres(self):
+        ordreCylindres = []
+        for i in self.cylindres:
+            # On demande à l'utilisateur de choisir l'ordre des cylindres
+            cylindreChoisi = int(input("Choisissez le cylindre " + str(i) + " : "))
+            while cylindreChoisi in ordreCylindres or cylindreChoisi > len(self.cylindres) or cylindreChoisi < 1:
+                print("Ce cylindre a déjà été choisi")
+                cylindreChoisi = int(input("Choisissez le cylindre " + str(i) + " : "))
+            ordreCylindres.append(cylindreChoisi)
+        return ordreCylindres
+
+cryptageManuel().afficherCylindres()
