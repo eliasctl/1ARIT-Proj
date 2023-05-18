@@ -10,6 +10,16 @@ def getEncryption():
     return liste
 
 
+def swap_labels(label1, label2):
+    row1 = label1.grid_info()["row"]
+    row2 = label2.grid_info()["row"]
+    column1 = label1.grid_info()["column"]
+    column2 = label2.grid_info()["column"]
+
+    label1.grid(row=row2, column=column2)
+    label2.grid(row=row1, column=column1)
+
+
 # fonction principale
 def main():
     # Création de la fenêtre
@@ -23,15 +33,16 @@ def main():
 
     liste_totale = getEncryption()
     liste_labels = []
+    boutons = []
 
     for i in range(len(liste_totale)):
         label = tk.Label(window, text=liste_totale[i])
         liste_labels.append(label)
         label.grid(row=i, column=0)
-
-    # on efface le premier label
-    liste_labels[0].destroy()
-    # liste_labels[0].grid_remove()
+        bouton = tk.Button(window, text=str(i), command=lambda idx=i: swap_labels(
+            liste_labels[idx], liste_labels[0]))
+        bouton.grid(row=i, column=1)
+        boutons.append(bouton)
 
     # Boucle principale de la fenêtre
     window.mainloop()

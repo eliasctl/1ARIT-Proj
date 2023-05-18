@@ -17,7 +17,6 @@ def add_to_liste_finale(indice):
     boutons[indice].grid_remove()
     global count
     count += 1
-    # print(count)
     checkIfOrdonated()
     update_liste_finale()
 
@@ -66,7 +65,8 @@ def create_window():
     for i in range(len(liste_totale)):
         tk.Label(window, text=liste_totale[i]).grid(row=i, column=0)
         tk.Label(window, text="->").grid(row=i, column=2)
-        bouton = tk.Button(window, text=str(i), command=lambda index=i: add_to_liste_finale(index))
+        bouton = tk.Button(window, text=str(
+            i), command=lambda index=i: add_to_liste_finale(index))
         bouton.grid(row=i, column=1)
         boutons.append(bouton)
 
