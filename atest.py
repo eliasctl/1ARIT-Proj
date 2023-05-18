@@ -1,24 +1,17 @@
 import tkinter as tk
-count = 0
+
+# Liste de test
+liste_totale = ["Element 1", "Element 2",
+                "Element 3", "Element 4", "Element 5"]
+liste_finale = []
+boutons = []
+labels_liste_finale = []
 
 
-# fonction qui stoque dans une liste les lignes d'un fichier
-def getEncryption():
-    with open("cryptage.txt", "r") as f:
-        liste = f.readlines()
-        for i in range(len(liste)):
-            liste[i] = liste[i].replace("\n", "")
-    return liste
-
-
-# fonction qui ajoute un element a un indice donné dans une liste finale
 def add_to_liste_finale(indice):
     liste_finale.append(liste_totale[indice])
     boutons[indice].grid_remove()
-    global count
-    count += 1
-    # print(count)
-    checkIfOrdonated()
+    print(liste_finale)
     update_liste_finale()
 
 
@@ -30,34 +23,17 @@ def update_liste_finale():
     # Afficher les éléments de la liste finale à côté des boutons
     for i in range(len(liste_finale)):
         label = tk.Label(window, text=liste_finale[i])
-        label.grid(row=i, column=3)
+        label.grid(row=i, column=2)
         labels_liste_finale.append(label)
 
 
-def checkIfOrdonated():
-    global count
-    if count == 5:
-        for label in labels_liste_finale:
-            print(label)
-            label.destroy()
-
-
-# Liste de test
-liste_totale = getEncryption()
-liste_finale = []
-boutons = []
-labels_liste_finale = []
-
-
-# fonction qui crée la fenetre
-def create_window():
+def create_list_window():
     global window
-
     # Création de la fenêtre
-    window = tk.Tk()
+    window = tk.Toplevel()
 
     # Titre de la fenêtre
-    window.title("Disque de jefferson")
+    window.title("Listes")
 
     # Taille de la fenêtre
     window.geometry("800x800")
@@ -65,7 +41,6 @@ def create_window():
     # Création des labels et des boutons
     for i in range(len(liste_totale)):
         tk.Label(window, text=liste_totale[i]).grid(row=i, column=0)
-        tk.Label(window, text="->").grid(row=i, column=2)
         bouton = tk.Button(window, text=str(
             i), command=lambda index=i: add_to_liste_finale(index))
         bouton.grid(row=i, column=1)
@@ -74,9 +49,29 @@ def create_window():
     # Mise à jour de l'affichage de la liste finale
     update_liste_finale()
 
-    # Boucle principale de la fenêtre
-    window.mainloop()
+
+def open_window():
+    # Création de la fenêtre principale
+    main_window = tk.Tk()
+
+    # Titre de la fenêtre principale
+    main_window.title("Fenêtre principale")
+
+    # Taille de la fenêtre principale
+    main_window.geometry("400x200")
+
+    # Fonction pour ouvrir la fenêtre avec les listes
+    def open_list_window():
+        create_list_window()
+
+    # Bouton pour ouvrir la fenêtre avec les listes
+    open_button = tk.Button(
+        main_window, text="Ouvrir la fenêtre avec les listes", command=open_list_window)
+    open_button.pack()
+
+    # Boucle principale de la fenêtre principale
+    main_window.mainloop()
 
 
-# Appel de la fonction pour créer la fenêtre
-create_window()
+# Appel de la fonction principale pour ouvrir la fenêtre principale
+open_window()
