@@ -37,7 +37,7 @@ def update_liste_finale():
 def checkIfOrdonated():
     global count
     if count == 5:
-        for label in labels_liste_finale:
+        for label in liste_finale:
             print(label)
             label.destroy()
 
@@ -66,8 +66,7 @@ def create_window():
     for i in range(len(liste_totale)):
         tk.Label(window, text=liste_totale[i]).grid(row=i, column=0)
         tk.Label(window, text="->").grid(row=i, column=2)
-        bouton = tk.Button(window, text=str(
-            i), command=lambda index=i: add_to_liste_finale(index))
+        bouton = tk.Button(window, text=str(i), command=lambda index=i: add_to_liste_finale(index))
         bouton.grid(row=i, column=1)
         boutons.append(bouton)
 

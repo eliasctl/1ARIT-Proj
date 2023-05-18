@@ -1,77 +1,40 @@
 import tkinter as tk
 
-# Liste de test
-liste_totale = ["Element 1", "Element 2",
-                "Element 3", "Element 4", "Element 5"]
-liste_finale = []
-boutons = []
-labels_liste_finale = []
+
+# fonction qui stoque dans une liste les lignes d'un fichier
+def getEncryption():
+    with open("cryptage.txt", "r") as f:
+        liste = f.readlines()
+        for i in range(len(liste)):
+            liste[i] = liste[i].replace("\n", "")
+    return liste
 
 
-def add_to_liste_finale(indice):
-    liste_finale.append(liste_totale[indice])
-    boutons[indice].grid_remove()
-    print(liste_finale)
-    update_liste_finale()
-
-
-def update_liste_finale():
-    # Supprimer les anciens labels de la liste finale
-    for label in labels_liste_finale:
-        label.destroy()
-
-    # Afficher les éléments de la liste finale à côté des boutons
-    for i in range(len(liste_finale)):
-        label = tk.Label(window, text=liste_finale[i])
-        label.grid(row=i, column=2)
-        labels_liste_finale.append(label)
-
-
-def create_list_window():
-    global window
+# fonction principale
+def main():
     # Création de la fenêtre
-    window = tk.Toplevel()
+    window = tk.Tk()
 
     # Titre de la fenêtre
-    window.title("Listes")
+    window.title("Disque de jefferson")
 
     # Taille de la fenêtre
-    window.geometry("800x800")
+    window.geometry("600x600")
 
-    # Création des labels et des boutons
+    liste_totale = getEncryption()
+    liste_labels = []
+
     for i in range(len(liste_totale)):
-        tk.Label(window, text=liste_totale[i]).grid(row=i, column=0)
-        bouton = tk.Button(window, text=str(
-            i), command=lambda index=i: add_to_liste_finale(index))
-        bouton.grid(row=i, column=1)
-        boutons.append(bouton)
+        label = tk.Label(window, text=liste_totale[i])
+        liste_labels.append(label)
+        label.grid(row=i, column=0)
 
-    # Mise à jour de l'affichage de la liste finale
-    update_liste_finale()
+    # on efface le premier label
+    liste_labels[0].destroy()
+    # liste_labels[0].grid_remove()
 
-
-def open_window():
-    # Création de la fenêtre principale
-    main_window = tk.Tk()
-
-    # Titre de la fenêtre principale
-    main_window.title("Fenêtre principale")
-
-    # Taille de la fenêtre principale
-    main_window.geometry("400x200")
-
-    # Fonction pour ouvrir la fenêtre avec les listes
-    def open_list_window():
-        create_list_window()
-
-    # Bouton pour ouvrir la fenêtre avec les listes
-    open_button = tk.Button(
-        main_window, text="Ouvrir la fenêtre avec les listes", command=open_list_window)
-    open_button.pack()
-
-    # Boucle principale de la fenêtre principale
-    main_window.mainloop()
+    # Boucle principale de la fenêtre
+    window.mainloop()
 
 
-# Appel de la fonction principale pour ouvrir la fenêtre principale
-open_window()
+main()
