@@ -35,10 +35,15 @@ def main():
         label = tk.Label(window, text=liste_totale[i])
         liste_labels.append(label)
         label.grid(row=i, column=0)
-        bouton = tk.Button(window, text=str(i), command=lambda id=i,
-                           btn=boutons[i]: add_to_liste_finale(id, liste_finale, btn))
+
+        if i < len(boutons):
+            bouton = boutons[i]
+        else:
+            bouton = tk.Button(window, text=str(
+                i), command=lambda id=i: add_to_liste_finale(id, liste_finale, boutons[id]))
+            boutons.append(bouton)
+
         bouton.grid(row=i, column=1)
-        boutons.append(bouton)
 
     # Boucle principale de la fenêtre
     window.mainloop()

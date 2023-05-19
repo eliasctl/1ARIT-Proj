@@ -36,9 +36,7 @@ def update_liste_finale():
 def checkIfOrdonated():
     global count
     if count == 5:
-        for label in liste_finale:
-            print(label)
-            label.destroy()
+        print("count = 5")
 
 
 # Liste de test
@@ -59,7 +57,7 @@ def create_window():
     window.title("Disque de jefferson")
 
     # Taille de la fenêtre
-    window.geometry("800x800")
+    window.geometry("600x600")
 
     # Création des labels et des boutons
     for i in range(len(liste_totale)):
