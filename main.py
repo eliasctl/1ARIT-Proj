@@ -1,25 +1,31 @@
 # Jefferson-Cylinder Par William BERGUE & Elias MOUSSA - SupInfo 2022/2023 - BenG1
 
 import random
-from datetime import datetime
-from time import strftime
 
 
 class CreerCylindres():
-    def __init__(self, nbCylindre):
-        self.alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
-                         "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-        self.nomFichier = "cylindre_" + \
-            datetime.now().strftime("%d_%m_%Y__%H_%M_%S") + ".txt"
+    def __init__(self):
+        self.alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+        tempNom = input("Entrez le nom du fichier sans l'extention : ")
+        if tempNom != "":
+            self.nomFichier = tempNom + ".txt"
         self.creerFichierTexte()
-        self.nbCylindre = nbCylindre
+        self.nbCylindre = 0
+        while self.nbCylindre <= 0:
+            print("Le nombre de cylindre doit un entier et être supérieur à 0")
+            nbCylindre = input("Entrez le nombre de cylindre : ")
+            try:
+                self.nbCylindre = int(nbCylindre)
+            except:
+                self.nbCylindre = 0
         while self.nbCylindre > 0:
             self.cylindre = self.creerCylindre()
             self.fichier = self.ecritureFichierTexte()
             self.nbCylindre -= 1
+        print("Le fichier " + self.nomFichier + " a été créé")
+        return 0
 
     def creerCylindre(self):
-        # Création d'un cylindre avec les lettres de l'alphabet dans un ordre aléatoire
         cylindre = []
         for i in range(26):
             cylindre.append(self.alphabet[i])
@@ -27,21 +33,17 @@ class CreerCylindres():
         return cylindre
 
     def creerFichierTexte(self):
-        # Création d'un fichier texte avec le cylindre
         fichier = open(self.nomFichier, "x")
         fichier.close()
 
     def ecritureFichierTexte(self):
-        # Ecriture du cylindre dans un fichier texte
         fichier = open(self.nomFichier, "a")
-        for i in range(0, 26):
+        for i in range(len(self.alphabet)):
+            print(self.cylindre[i])
             fichier.write(self.cylindre[i])
         if self.nbCylindre > 1:
             fichier.write("\n")
         fichier.close()
-
-
-CreerCylindres(5)
 
 
 def FichierTexteEnDictionnaire(nomFichier):
@@ -59,18 +61,21 @@ def FichierTexteEnDictionnaire(nomFichier):
     return dictionnaire
 
 
-nomFichier = "test.txt"
-# print(FichierTexteEnDictionnaire(nomFichier))
-cylindres = FichierTexteEnDictionnaire(nomFichier)
-
-
-class cryptageManuel():
+class cryptage():
     def __init__(self):
-        #self.cylindres = FichierTexteEnDictionnaire(nomFichier)
-        self.cylindres = cylindres
+        self.nomFichier = input("Entrez le nom du fichier sans l'extention : ")
+        self.cylindres = FichierTexteEnDictionnaire(self.nomFichier + ".txt")
         self.ordreCylindres = self.choisirOrdreCylindres()
-        # for ligne in self.cylindres:
-        #     self.ordreCylindres.append(ligne)
+        self.numLigne = 0
+        while self.numLigne <= 2 or 25 <= self.numLigne:
+            print("La ligne doit être un entier entre 2 et 25")
+            numLigne = input("Entrez la ligne où vous voulez que le texte en claire apparaisse (ligne verte) : ")
+            try:
+                self.numLigne = int(numLigne)
+            except:
+                self.numLigne = 0
+        self.afficherCylindres()
+
 
     def afficherCylindres(self):
         textOrdreCylindres = ""
@@ -79,9 +84,13 @@ class cryptageManuel():
             textOrdreCylindres += str(self.ordreCylindres[i-1]) + " "
         print(textOrdreCylindres)
         for i in range(26):
+            if i == 0:
+                print("\033[31m")
+            elif i == self.numLigne:
+                print("\033[32m")
             for j in range(nbCylindres):
                 print(self.cylindres[self.ordreCylindres[j]][i], end=" ")
-            print("")
+            print("\033[0m")
 
     def tournerCylindre(self, numCylindre, sens):
         if sens == 1:
@@ -94,7 +103,6 @@ class cryptageManuel():
     def choisirOrdreCylindres(self):
         ordreCylindres = []
         for i in self.cylindres:
-            # On demande à l'utilisateur de choisir l'ordre des cylindres
             cylindreChoisi = int(
                 input("Choisissez le cylindre " + str(i) + " : "))
             while cylindreChoisi in ordreCylindres or cylindreChoisi > len(self.cylindres) or cylindreChoisi < 1:
@@ -104,5 +112,6 @@ class cryptageManuel():
             ordreCylindres.append(cylindreChoisi)
         return ordreCylindres
 
+cryptage()
 
-cryptageManuel().afficherCylindres()
+#Lecture claire
