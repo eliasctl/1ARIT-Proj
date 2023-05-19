@@ -11,11 +11,18 @@ def getEncryption():
     return liste
 
 
+def clear_grid():
+    for widget in window.grid_slaves():
+        widget.grid_forget()
+
+
 # fonction qui verifie si la liste est ordonnée
 def checkIfOrdonated():
     global count
     if count == 5:
-        print("count = 5")
+        clear_grid()
+        update_liste_window()
+        create_rotate_button()
 
 
 # fonction qui ajoute un element a un indice donné dans une liste finale
@@ -26,13 +33,33 @@ def add_to_liste_finale(indice):
     count += 1
     update_liste_window()
     checkIfOrdonated()
-    print()
-    print(liste_finale)
-    print()
-    print(labels_liste_finale)
 
 
-# fonction qui met a jour la fenetre
+# fonction qui crée un bouton pour faire tourner la liste
+def create_rotate_button():
+    for i in range(len(liste_totale)):
+        bouton = tk.Button(window, text=str("rotate Liste"),
+                           command=lambda index=i: rotate_liste(index))
+        bouton.grid(row=i, column=5)
+        boutons.append(bouton)
+
+
+# fonction qui fait tourner une chaine de caractère
+def rotate_string(string):
+    rotated = string[-1] + string[:-1]
+    return rotated
+
+
+# fonction qui est apellée quand on clique sur le bouton pour faire tourner la liste
+def rotate_liste(index):
+    strin_to_rotate = liste_finale[index]
+    liste_finale[index] = rotate_string(strin_to_rotate)
+    clear_grid()
+    update_liste_window()
+    create_rotate_button()
+
+
+# fonction qui affiche la liste triée dans la fenêtre
 def update_liste_window():
     # Supprimer les anciens labels de la liste finale
     for label in labels_liste_finale:
@@ -47,7 +74,7 @@ def update_liste_window():
 
 # Liste des elements non triés
 liste_totale = getEncryption()
-# Liste des elements
+# Liste des elements triés
 liste_finale = []
 # Liste des boutons
 boutons = []
@@ -83,8 +110,3 @@ def create_window():
 
 # Appel de la fonction pour créer la fenêtre
 create_window()
-
-print()
-print(liste_finale)
-print()
-print(labels_liste_finale)
