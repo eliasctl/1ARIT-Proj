@@ -3,7 +3,7 @@ import tkinter as tk
 
 # Function to read encryption data from a file
 def get_encryption():
-    with open("cryptage.txt", "r") as f:
+    with open("wiwi.txt", "r") as f:
         return [line.strip() for line in f]
 
 
@@ -49,12 +49,12 @@ def update_liste_window():
 
 # Function to get the encrypted word
 def get_encrypted_word():
-    return [element[0] for element in liste_trie]
+    return ''.join([element[0] for element in liste_trie])
 
 
 # Function to get the decrypted word
 def get_decrypted_word():
-    return [element[decalage] for element in liste_trie]
+    return ''.join([element[decalage] for element in liste_trie])
 
 
 # Function to handle increment or decrement of the shift value
@@ -64,6 +64,16 @@ def decalage_plus_moins(arg):
         decalage += 1
     elif arg < 0 and decalage > 2:
         decalage -= 1
+    clear_grid()
+    update_liste_window()
+    create_rotate_button()
+    create_sub()
+
+
+# Function to reverse decalage
+def reverse_decalage():
+    global decalage
+    decalage = -decalage
     clear_grid()
     update_liste_window()
     create_rotate_button()
@@ -83,13 +93,21 @@ def create_button_plus_moins():
 
 # Function to create the labels for encrypted and decrypted words
 def create_sub():
-    tk.Label(window, text="Mot crypte : " + str(get_encrypted_word())
-             ).grid(row=len(liste_trie) + 1, column=3)
-    tk.Label(window, text="Mot decrypte : " + str(get_decrypted_word())
-             ).grid(row=len(liste_trie) + 3, column=3)
+    crypte_label = tk.Label(
+        window, text="Mot crypté : " + str(get_encrypted_word()))
+    crypte_label.grid(row=len(liste_trie) + 1, column=3)
+    crypte_label.config(fg="red")
+
+    decrypted_label = tk.Label(
+        window, text="Mot decrypte : " + str(get_decrypted_word()))
+    decrypted_label.grid(row=len(liste_trie) + 3, column=3)
+    decrypted_label.config(fg="green")
+
     tk.Label(window, text="Decalage : " + str(decalage)
              ).grid(row=len(liste_trie) + 7, column=3)
     create_button_plus_moins()
+    tk.Button(window, text="Crypter/Decrypter",
+              command=lambda: reverse_decalage()).grid(row=len(liste_trie) + 100, column=3)
 
 
 # Function to create rotate buttons for each element in the list
@@ -123,7 +141,7 @@ def create_window():
         tk.Label(window, text=element).grid(row=i, column=0)
         tk.Label(window, text="->").grid(row=i, column=2)
         button = tk.Button(window, text=str(
-            i), command=lambda index=i: add_to_liste_trie(index))
+            i + 1), command=lambda index=i: add_to_liste_trie(index))
         button.grid(row=i, column=1)
         boutons.append(button)
 
