@@ -2,6 +2,15 @@
 
 import random
 
+def header():
+    # console clear
+    print("\033[H\033[J")
+    print("______________________________________________________________________")
+    print("  . .-. .-. .-. .-. .-. .-. .-. . .   .-. . . .   .-. . . .-. .-. .-.")
+    print("  | |-  |-  |-  |-  |(  `-. | | |\|   |    |  |    |  |\| |  )|-  |(")
+    print("`-' `-' '   '   `-' ' ' `-' `-' ' `   `-'  `  `-' `-' ' ` `-' `-' ' '")
+    print("______________________________________________________________________")
+
 
 class CreerCylindres():
     def __init__(self):
@@ -23,7 +32,6 @@ class CreerCylindres():
             self.fichier = self.ecritureFichierTexte()
             self.nbCylindre -= 1
         print("Le fichier " + self.nomFichier + " a été créé")
-        return 0
 
     def creerCylindre(self):
         cylindre = []
@@ -39,7 +47,6 @@ class CreerCylindres():
     def ecritureFichierTexte(self):
         fichier = open(self.nomFichier, "a")
         for i in range(len(self.alphabet)):
-            print(self.cylindre[i])
             fichier.write(self.cylindre[i])
         if self.nbCylindre > 1:
             fichier.write("\n")
@@ -61,7 +68,7 @@ def FichierTexteEnDictionnaire(nomFichier):
     return dictionnaire
 
 
-class cryptage():
+class cryptageOuDecryptage():
     def __init__(self):
         self.nomFichier = input("Entrez le nom du fichier sans l'extention : ")
         self.cylindres = FichierTexteEnDictionnaire(self.nomFichier + ".txt")
@@ -83,35 +90,51 @@ class cryptage():
         for i in self.cylindres:
             textOrdreCylindres += str(self.ordreCylindres[i-1]) + " "
         print(textOrdreCylindres)
+        print(" ")
         for i in range(26):
             if i == 0:
-                print("\033[31m")
+                print("\033[31m", end="")
             elif i == self.numLigne:
-                print("\033[32m")
+                print("\033[32m", end="")
             for j in range(nbCylindres):
                 print(self.cylindres[self.ordreCylindres[j]][i], end=" ")
             print("\033[0m")
+        print(" ")
 
     def tournerCylindre(self, numCylindre, sens):
         if sens == 1:
-            self.cylindres[numCylindre].insert(
-                0, self.cylindres[numCylindre].pop())
+            self.cylindres[self.ordreCylindres[numCylindre-1]].insert(0, self.cylindres[self.ordreCylindres[numCylindre-1]].pop())
         elif sens == 0:
-            self.cylindres[numCylindre].append(
-                self.cylindres[numCylindre].pop(0))
+            self.cylindres[self.ordreCylindres[numCylindre-1]].append(self.cylindres[self.ordreCylindres[numCylindre-1]].pop(0))
 
     def choisirOrdreCylindres(self):
         ordreCylindres = []
         for i in self.cylindres:
-            cylindreChoisi = int(
-                input("Choisissez le cylindre " + str(i) + " : "))
+            cylindreChoisi = int(input("Choisissez le cylindre " + str(i) + " : "))
             while cylindreChoisi in ordreCylindres or cylindreChoisi > len(self.cylindres) or cylindreChoisi < 1:
                 print("Ce cylindre a déjà été choisi")
-                cylindreChoisi = int(
-                    input("Choisissez le cylindre " + str(i) + " : "))
+                cylindreChoisi = int(input("Choisissez le cylindre " + str(i) + " : "))
             ordreCylindres.append(cylindreChoisi)
         return ordreCylindres
 
-cryptage()
+header()
 
-#Lecture claire
+ChoixCreerCylindres = input("Voulez-vous créer un fichier de cylindres ? (O/N) : ")
+if ChoixCreerCylindres == "O" or ChoixCreerCylindres == "o":
+    CreerCylindres()
+ChoixCryptageOuDecryptage = input("Voulez-vous crypter ou décrypter un fichier ? (O/N) : ")
+if ChoixCryptageOuDecryptage == "O" or ChoixCryptageOuDecryptage == "o":
+    cryptageOuDecryptage = cryptageOuDecryptage()
+    Fin = False
+    while Fin == False:
+        ChoixTournerCylindre = input("Voulez-vous tourner un cylindre ? (O/N) : ")
+        if ChoixTournerCylindre == "O" or ChoixTournerCylindre == "o":
+            numCylindre = int(input("Entrez le numéro du cylindre à tourner : "))
+            sens = int(input("Entrez le sens de rotation (0 pour haut, 1 pour bas) : "))
+            cryptageOuDecryptage.tournerCylindre(numCylindre, sens)
+            header()
+            cryptageOuDecryptage.afficherCylindres()
+        else:
+            Fin = True
+
+Print = input("Appuyez sur Entrée pour quitter")
