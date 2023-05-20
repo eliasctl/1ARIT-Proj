@@ -9,7 +9,6 @@ def getEncryption():
         liste = f.readlines()
         for i in range(len(liste)):
             liste[i] = "".join(liste[i].replace("\n", ""))
-    # print(liste)
     return liste
 
 
