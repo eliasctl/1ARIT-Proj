@@ -62,7 +62,7 @@ def decalage_plus_moins(arg):
     global decalage
     if arg > 0 and decalage < 25:
         decalage += 1
-    elif arg < 0 and decalage > 3:
+    elif arg < 0 and decalage > 2:
         decalage -= 1
     clear_grid()
     update_liste_window()
@@ -109,6 +109,7 @@ def check_if_ordonated():
         clear_grid()
         update_liste_window()
         create_rotate_button()
+        create_sub()
 
 
 # Function to create the main window
